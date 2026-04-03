@@ -247,7 +247,7 @@ local function depositJars()
 		and not Inventory:Contains(IDS.ITEMS.partialJar)
 	then
 		API.DoAction_Object1(0x29, API.OFF_ACT_GeneralObject_route0, IDS.OBJECTS.unstableRift, 50)
-		API.WaitUntilMovingEnds()
+		API.WaitUntilMovingandAnimEnds()
 	end
 end
 
@@ -305,26 +305,28 @@ while API.Read_LoopyLoop() do
 		end
 	end
 
-	collectKnowledgeFrag()
-	collectCoreMemoryFrag()
+	if not scriptPaused then
+		collectKnowledgeFrag()
+		collectCoreMemoryFrag()
 
-	::core::
-	if dumpCore and not centerActive() and Inventory:InvStackSize(IDS.ITEMS.coreMemoryFragment) > 0 then
-		API.DoAction_Object_valid1(0x29, API.OFF_ACT_GeneralObject_route0, IDS.OBJECTS.plinth, 50, true)
-		API.RandomSleep2(2400, 1800, 1800)
-		API.WaitUntilMovingEnds(20, 2)
-		goto core
+		::core::
+		if dumpCore and not centerActive() and Inventory:InvStackSize(IDS.ITEMS.coreMemoryFragment) > 0 then
+			API.DoAction_Object_valid1(0x29, API.OFF_ACT_GeneralObject_route0, IDS.OBJECTS.plinth, 50, true)
+			API.RandomSleep2(2400, 1800, 1800)
+			API.WaitUntilMovingEnds(20, 2)
+			goto core
+		end
+
+		if twoTick and API.ReadPlayerAnim() == 31889 then
+			twoTicking()
+		end
+
+		collectEmptyJars()
+		fillJars()
+		depositJars()
+
+		idleCheck()
+
+		API.DoRandomEvents()
 	end
-
-	if twoTick and API.ReadPlayerAnim() == 31889 then
-		twoTicking()
-	end
-
-	collectEmptyJars()
-	fillJars()
-	depositJars()
-
-	idleCheck()
-
-	API.DoRandomEvents()
 end
