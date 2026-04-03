@@ -309,7 +309,7 @@ while API.Read_LoopyLoop() do
 	collectCoreMemoryFrag()
 
 	::core::
-	if dumpCore and not centerActive() and API.InvStackSize(IDS.ITEMS.coreMemoryFragment) > 0 then
+	if dumpCore and not centerActive() and Inventory:InvStackSize(IDS.ITEMS.coreMemoryFragment) > 0 then
 		API.DoAction_Object_valid1(0x29, API.OFF_ACT_GeneralObject_route0, IDS.OBJECTS.plinth, 50, true)
 		API.RandomSleep2(2400, 1800, 1800)
 		API.WaitUntilMovingEnds(20, 2)
